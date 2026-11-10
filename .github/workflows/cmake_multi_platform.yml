@@ -51,11 +51,8 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-      - name: Configure CMake
-        if: runner.os == 'Windows'
-        shell: bash
-        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      - name: Configure CMake (ubuntu, original args)
+        if: runner.os == 'Linux'
         run: >
           cmake
           -S ${{ github.workspace }}
@@ -63,8 +60,17 @@ jobs:
           -DCMAKE_CXX_COMPILER=${{ matrix.toolchain.compiler.cpp }}
           -DCMAKE_C_COMPILER=${{ matrix.toolchain.compiler.cc }}
           -DCMAKE_CXX_FLAGS=${{ matrix.toolchain.cxxflags }}
+          -G "Ninja Multi-Config"
+
+      - name: Configure CMake (windows, CMake<3.5 compat)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: >
+          cmake
+          -S "$GITHUB_WORKSPACE"
+          -B "$GITHUB_WORKSPACE/build"
           -DCMAKE_POLICY_VERSION_MINIMUM="3.5"
-          -DCPM_SOURCE_CACHE=${{ github.workspace }}/.cpm-cache
+          -DCPM_SOURCE_CACHE="$GITHUB_WORKSPACE/.cpm-cache"
           -G "Ninja Multi-Config"
 
       - name: Build

@@ -30,3 +30,14 @@ CPM 拉取的 `libzmq 4.3.5` 声明了 `cmake_minimum_required(3.0)`，CMake 4.x
 `Invalid CMAKE_POLICY_VERSION_MINIMUM value "3"`（runner 默认 PowerShell 把 `3.5`
 拆成 `=3` 和 `.5` 两个参数，并产生 `Ignoring extra path ".5"` 告警）。给 Configure
 步骤增加 `shell: bash` 并把该参数改为引号形式 `-DCMAKE_POLICY_VERSION_MINIMUM="3.5"` 后解决。
+
+
+## 三次修正
+
+上一轮把共享的 Configure 步骤整个加上了 `if: runner.os == 'Windows'`，导致 Linux 工具链没有执行
+configure（`Error: .../build is not a directory`）；同时 `${{ github.workspace }}` 里的反斜杠
+被 Windows 上的 MSYS 路径转换破坏成 `aex-actorex-actor`。
+
+改为：
+- Linux 工具链走原 Configure 命令（不带 policy 参数）；
+- Windows 工具链单独一步 `shell: bash`，全部使用 `$GITHUB_WORKSPACE`（正斜杠形式）+ policy 参数。
