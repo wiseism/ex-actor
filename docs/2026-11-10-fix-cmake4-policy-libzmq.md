@@ -23,3 +23,10 @@ CPM 拉取的 `libzmq 4.3.5` 声明了 `cmake_minimum_required(3.0)`，CMake 4.x
 ## 参考
 
 - https://cmake.org/c/help/latest/variable/CMAKE_POLICY_VERSION_MINIMUM.html
+
+## 二次修正
+
+首轮加 `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` 后 Windows 工具链在 Configure 前即报
+`Invalid CMAKE_POLICY_VERSION_MINIMUM value "3"`（runner 默认 PowerShell 把 `3.5`
+拆成 `=3` 和 `.5` 两个参数，并产生 `Ignoring extra path ".5"` 告警）。给 Configure
+步骤增加 `shell: bash` 并把该参数改为引号形式 `-DCMAKE_POLICY_VERSION_MINIMUM="3.5"` 后解决。
