@@ -61,6 +61,8 @@ jobs:
           -DCMAKE_CXX_COMPILER=${{ matrix.toolchain.compiler.cpp }}
           -DCMAKE_C_COMPILER=${{ matrix.toolchain.compiler.cc }}
           -DCMAKE_CXX_FLAGS=${{ matrix.toolchain.cxxflags }}
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          -DCPM_SOURCE_CACHE=${{ github.workspace }}/.cpm-cache
           -G "Ninja Multi-Config"
 
       - name: Build
