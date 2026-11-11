@@ -41,3 +41,10 @@ configure（`Error: .../build is not a directory`）；同时 `${{ github.worksp
 改为：
 - Linux 工具链走原 Configure 命令（不带 policy 参数）；
 - Windows 工具链单独一步 `shell: bash`，全部使用 `$GITHUB_WORKSPACE`（正斜杠形式）+ policy 参数。
+
+## 验证记录
+| Run | 结果 |
+|---|---|
+| 42833627961 (8471d1b) | failure — pwsh 参数拆分问题 |
+| 42838763197 (1d3f1de) | failure — workspace 路径问题 |
+| 42840023260 (d265309) | ✅ success |
