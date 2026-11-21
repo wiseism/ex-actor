@@ -24,6 +24,8 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Build documentation
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           curl -fsSL https://d2lang.com/install.sh | sh -s --
           ./docs/doc_cli.sh build
