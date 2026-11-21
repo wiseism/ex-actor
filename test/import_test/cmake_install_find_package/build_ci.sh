@@ -8,8 +8,8 @@ cd "$SRC" || exit
 set -e -x
 
 
-# Clone ex-actor repository
-git clone https://github.com/ex-actor/ex-actor.git --depth 1
+# Clone ex-actor repository (CI passes EX_ACTOR_REPO_URL; default = upstream)
+git clone "${EX_ACTOR_REPO_URL:-https://github.com/ex-actor/ex-actor.git}" --depth 1
 pushd ex-actor
   if [ -n "$GITHUB_ACTIONS" ]; then
     # For CI test only, checkout to the current commit. You don't need to do this in your project.

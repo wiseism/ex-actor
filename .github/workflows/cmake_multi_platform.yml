@@ -31,7 +31,8 @@ jobs:
       matrix:
         build_type: [RelWithDebInfo]
         toolchain:
-          - { os: windows-latest, compiler: { cc: cl, cpp: cl } }
+          # windows-latest = VS 18 (MSVC 14.52) breaks reflect-cpp (C3539); pin to VS 2022
+          - { os: windows-2022, compiler: { cc: cl, cpp: cl } }
           - { os: ubuntu-24.04, compiler: { cc: gcc, cpp: g++ } }
           - { os: ubuntu-24.04, compiler: { cc: clang, cpp: clang++ } }
           - { os: ubuntu-24.04, compiler: { cc: clang, cpp: clang++ }, cxxflags: "-fsanitize=thread" }
